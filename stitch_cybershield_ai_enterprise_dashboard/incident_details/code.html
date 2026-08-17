@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Incident Details - CyberShield AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#442b00",
+                      "on-tertiary-container": "#6b4700",
+                      "surface-dim": "#0e1417",
+                      "surface-tint": "#4cd6ff",
+                      "primary-fixed-dim": "#4cd6ff",
+                      "on-background": "#dde3e7",
+                      "secondary-fixed": "#d8e3fb",
+                      "inverse-on-surface": "#2b3134",
+                      "on-secondary-fixed-variant": "#3c475a",
+                      "on-secondary-fixed": "#111c2d",
+                      "tertiary-container": "#feb127",
+                      "outline": "#859399",
+                      "background": "#0e1417",
+                      "primary": "#a4e6ff",
+                      "tertiary-fixed-dim": "#ffba49",
+                      "error": "#ffb4ab",
+                      "error-container": "#93000a",
+                      "inverse-surface": "#dde3e7",
+                      "secondary-fixed-dim": "#bcc7de",
+                      "on-secondary": "#263143",
+                      "surface": "#0e1417",
+                      "primary-fixed": "#b7eaff",
+                      "outline-variant": "#3c494e",
+                      "surface-container-lowest": "#090f12",
+                      "surface-container-high": "#242b2e",
+                      "secondary-container": "#3e495d",
+                      "on-primary-fixed": "#001f28",
+                      "tertiary-fixed": "#ffddb1",
+                      "surface-container-highest": "#2f3639",
+                      "on-surface-variant": "#bbc9cf",
+                      "on-error": "#690005",
+                      "tertiary": "#ffd59c",
+                      "primary-container": "#00d1ff",
+                      "inverse-primary": "#00677f",
+                      "on-error-container": "#ffdad6",
+                      "surface-variant": "#2f3639",
+                      "surface-bright": "#333a3d",
+                      "on-primary-container": "#00566a",
+                      "on-primary": "#003543",
+                      "surface-container-low": "#161d1f",
+                      "surface-container": "#1a2123",
+                      "secondary": "#bcc7de",
+                      "on-surface": "#dde3e7",
+                      "on-secondary-container": "#aeb9d0",
+                      "on-primary-fixed-variant": "#004e60",
+                      "on-tertiary-fixed": "#291800",
+                      "on-tertiary-fixed-variant": "#624000"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "margin": "24px",
+                      "md": "16px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "headline-sm": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "mono-data": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                      "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "500"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "mono-data": ["13px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        /* Tonal Layers & Flat Outlines */
+        .soc-card {
+            background-color: theme('colors.surface-container-low');
+            border: 1px solid theme('colors.outline-variant');
+            border-radius: theme('borderRadius.DEFAULT');
+        }
+        .soc-header-row {
+            background-color: theme('colors.surface-container');
+            border-bottom: 1px solid theme('colors.outline-variant');
+        }
+        .soc-button-primary {
+            background-color: theme('colors.primary-container');
+            color: theme('colors.on-primary-container');
+            border-radius: theme('borderRadius.DEFAULT');
+            padding: theme('spacing.sm') theme('spacing.md');
+            font-family: theme('fontFamily.label-md');
+            font-size: theme('fontSize.label-md')[0];
+            font-weight: 600;
+        }
+        .soc-button-ghost {
+            background-color: transparent;
+            color: theme('colors.on-surface');
+            border: 1px solid theme('colors.outline-variant');
+            border-radius: theme('borderRadius.DEFAULT');
+            padding: theme('spacing.sm') theme('spacing.md');
+            font-family: theme('fontFamily.label-md');
+            font-size: theme('fontSize.label-md')[0];
+            font-weight: 600;
+        }
+        .soc-button-destructive {
+            background-color: theme('colors.error-container');
+            color: theme('colors.on-error-container');
+            border-radius: theme('borderRadius.DEFAULT');
+            padding: theme('spacing.sm') theme('spacing.md');
+            font-family: theme('fontFamily.label-md');
+            font-size: theme('fontSize.label-md')[0];
+            font-weight: 600;
+        }
+        .soc-badge-critical {
+            background-color: rgba(147, 0, 10, 0.1); /* error-container with opacity */
+            color: theme('colors.error');
+            border: 1px solid rgba(255, 180, 171, 0.2);
+            border-radius: theme('borderRadius.DEFAULT');
+            padding: theme('spacing.xs') theme('spacing.sm');
+            font-family: theme('fontFamily.label-md');
+            font-size: theme('fontSize.label-md')[0];
+            font-weight: 600;
+        }
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: theme('colors.outline-variant');
+            z-index: 0;
+        }
+        .timeline-line-active {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 50%; /* Adjust based on progress */
+            height: 2px;
+            background-color: theme('colors.primary-container');
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex font-body-md text-body-md">
+<!-- SideNavBar (Shared Component) -->
+<nav class="bg-surface dark:bg-surface text-primary dark:text-primary font-body-md text-body-md w-[240px] h-screen fixed left-0 top-0 border-r border-outline-variant dark:border-outline-variant z-50">
+<div class="flex flex-col h-full py-lg">
+<!-- Header -->
+<div class="px-md mb-xl flex items-center gap-md">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined font-bold text-[20px]" data-icon="shield">shield</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface dark:text-on-surface">CyberShield AI</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Enterprise SOC</p>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex-1 flex flex-col gap-sm overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Overview</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span>Monitoring</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="dns">dns</span>
+<span>Infrastructure</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span>Threats</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center gap-md px-md py-sm text-primary dark:text-primary bg-secondary-container/10 border-l-4 border-primary cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="emergency" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<span class="font-bold">Incidents</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="model_training">model_training</span>
+<span>Attack Simulator</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="settings_backup_restore">settings_backup_restore</span>
+<span>Recovery</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="article">article</span>
+<span>Logs</span>
+</a>
+</div>
+<!-- Footer -->
+<div class="mt-auto border-t border-outline-variant dark:border-outline-variant pt-md">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Support</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col ml-[240px] w-[calc(100%-240px)]">
+<!-- TopAppBar (Shared Component) -->
+<header class="bg-surface dark:bg-surface text-primary dark:text-primary font-label-md text-label-md fixed top-0 right-0 w-[calc(100%-240px)] h-16 border-b border-outline-variant dark:border-outline-variant z-40">
+<div class="flex justify-between items-center px-lg h-full">
+<!-- Search & Navigation -->
+<div class="flex items-center gap-xl h-full">
+<div class="relative hidden md:flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-surface-container-low border border-outline-variant rounded pl-10 pr-4 py-1.5 text-body-md focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container w-64" placeholder="Search threats, hosts..." type="text"/>
+</div>
+<nav class="flex items-center gap-lg h-full">
+<a class="text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all flex items-center h-full" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all flex items-center h-full" href="#">Systems</a>
+<a class="text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all flex items-center h-full" href="#">Compliance</a>
+</nav>
+</div>
+<!-- Actions & Profile -->
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-all scale-95 duration-150 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-all scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden ml-sm">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a SOC analyst in a dimly lit cybersecurity operations center. Soft blue lighting reflects on their face, conveying focus and vigilance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFwEGw4xQ3NELCXRPBWCIfiMRHOWvhI_z5Un5MKHza3sxR7LOdIkhqXt-IUhfV2zGZgSe1301I_lSvjNznIxreknoDYbd3lB0agIMFqlRmolfMVeA-_ZQWmnaKoYZaP5l-2fDKhJ0nPVclFs-Qqs5vc1Cy2pYZKzG3XTTh59vjei-dKR7_FJb5EYF2-G8xhis7bDMuCLFH_nPBmAH_RfTxuUvyq0nNSMxrIfD_SvydGjsVpqZyKrdE"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Page Content Canvas -->
+<main class="flex-1 mt-16 p-lg pb-xl bg-background overflow-y-auto">
+<!-- Page Header -->
+<div class="flex justify-between items-start mb-lg">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-mono-data text-mono-data text-on-surface-variant">INC-8492</span>
+<span class="soc-badge-critical">Critical Threat</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Anomalous Data Exfiltration</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Detected via Deep Packet Inspection on Gateway Alpha. High confidence of data exfiltration to unauthorized external IP.</p>
+</div>
+<div class="flex gap-md">
+<button class="soc-button-ghost flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="ios_share">ios_share</span> Export
+                    </button>
+<button class="soc-button-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="shield_person">shield_person</span> Assign Analyst
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-lg">
+<!-- Timeline & Context (Spans 8 cols) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-lg">
+<!-- Incident Lifecycle -->
+<div class="soc-card p-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-lg">Incident Lifecycle</h3>
+<div class="relative px-lg py-md mb-sm">
+<div class="timeline-line"></div>
+<div class="timeline-line-active"></div>
+<div class="relative z-10 flex justify-between items-center w-full">
+<!-- Predict -->
+<div class="flex flex-col items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="check">check</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Predict</span>
+</div>
+<!-- Detect -->
+<div class="flex flex-col items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="check">check</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Detect</span>
+</div>
+<!-- Contain (Current) -->
+<div class="flex flex-col items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface border-2 border-primary-container text-primary-container flex items-center justify-center animate-pulse">
+<span class="material-symbols-outlined text-[18px]" data-icon="radio_button_checked">radio_button_checked</span>
+</div>
+<span class="font-label-md text-label-md text-primary-container">Contain</span>
+</div>
+<!-- Recover -->
+<div class="flex flex-col items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="healing">healing</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Recover</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Tactical Analysis (IoCs) -->
+<div class="soc-card">
+<div class="soc-header-row px-md py-sm flex justify-between items-center">
+<h3 class="font-title-lg text-title-lg text-on-surface">Tactical Analysis</h3>
+<span class="font-label-md text-label-md text-on-surface-variant">4 Indicators Found</span>
+</div>
+<div class="p-0">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="border-b border-outline-variant text-on-surface-variant bg-surface-container/50">
+<th class="px-md py-sm font-label-md font-medium">Type</th>
+<th class="px-md py-sm font-label-md font-medium">Indicator Value</th>
+<th class="px-md py-sm font-label-md font-medium">Confidence</th>
+<th class="px-md py-sm font-label-md font-medium text-right">Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="px-md py-sm flex items-center gap-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="lan">lan</span> IP Address
+                                        </td>
+<td class="px-md py-sm font-mono-data text-mono-data text-on-surface">192.168.45.102</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs text-error">
+<span class="material-symbols-outlined text-[16px]" data-icon="warning">warning</span> High
+                                            </div>
+</td>
+<td class="px-md py-sm text-right">
+<button class="text-primary hover:text-primary-container transition-colors">Analyze</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="px-md py-sm flex items-center gap-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="description">description</span> File Hash (SHA256)
+                                        </td>
+<td class="px-md py-sm font-mono-data text-mono-data text-on-surface truncate max-w-[200px]">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</td>
+<td class="px-md py-sm text-tertiary">Medium</td>
+<td class="px-md py-sm text-right">
+<button class="text-primary hover:text-primary-container transition-colors">Analyze</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Action Panel (Spans 4 cols) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
+<!-- Affected Asset Overview -->
+<div class="soc-card p-md">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-md">Affected Asset</h3>
+<div class="flex items-center gap-md mb-md">
+<div class="w-12 h-12 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]" data-icon="dns">dns</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">DB-PROD-04</div>
+<div class="font-mono-data text-mono-data text-on-surface-variant">10.0.5.22</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm mb-md">
+<div class="bg-surface-container-low p-sm rounded border border-outline-variant">
+<div class="font-label-md text-label-md text-on-surface-variant">OS</div>
+<div class="font-body-sm text-body-sm text-on-surface">Linux Kernel 5.15</div>
+</div>
+<div class="bg-surface-container-low p-sm rounded border border-outline-variant">
+<div class="font-label-md text-label-md text-on-surface-variant">Owner</div>
+<div class="font-body-sm text-body-sm text-on-surface">Data Eng Team</div>
+</div>
+</div>
+</div>
+<!-- Automated Response Actions -->
+<div class="soc-card">
+<div class="soc-header-row px-md py-sm">
+<h3 class="font-title-lg text-title-lg text-on-surface">Response Actions</h3>
+</div>
+<div class="p-md flex flex-col gap-md">
+<button class="soc-button-destructive flex justify-center items-center gap-sm w-full">
+<span class="material-symbols-outlined text-[18px]" data-icon="gpp_bad">gpp_bad</span> Isolate Asset
+                            </button>
+<button class="soc-button-ghost border-error text-error hover:bg-error-container hover:text-on-error-container transition-colors flex justify-center items-center gap-sm w-full">
+<span class="material-symbols-outlined text-[18px]" data-icon="block">block</span> Block IP at Firewall
+                            </button>
+<button class="soc-button-ghost flex justify-center items-center gap-sm w-full">
+<span class="material-symbols-outlined text-[18px]" data-icon="key">key</span> Force Credential Reset
+                            </button>
+</div>
+</div>
+<!-- Recovery Controls -->
+<div class="soc-card">
+<div class="soc-header-row px-md py-sm flex justify-between items-center">
+<h3 class="font-title-lg text-title-lg text-on-surface">Recovery Plan</h3>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="healing">healing</span>
+</div>
+<div class="p-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Pre-approved recovery playbook available once containment is verified.</p>
+<button class="soc-button-primary w-full opacity-50 cursor-not-allowed flex justify-center items-center gap-sm" disabled="">
+                                Initiate Recovery Playbook <span class="material-symbols-outlined text-[16px]" data-icon="play_arrow">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

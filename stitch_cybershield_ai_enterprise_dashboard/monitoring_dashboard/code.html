@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CyberShield AI - Monitoring</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#442b00",
+                        "on-tertiary-container": "#6b4700",
+                        "surface-dim": "#0e1417",
+                        "surface-tint": "#4cd6ff",
+                        "primary-fixed-dim": "#4cd6ff",
+                        "on-background": "#dde3e7",
+                        "secondary-fixed": "#d8e3fb",
+                        "inverse-on-surface": "#2b3134",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "on-secondary-fixed": "#111c2d",
+                        "tertiary-container": "#feb127",
+                        "outline": "#859399",
+                        "background": "#0e1417",
+                        "primary": "#a4e6ff",
+                        "tertiary-fixed-dim": "#ffba49",
+                        "error": "#ffb4ab",
+                        "error-container": "#93000a",
+                        "inverse-surface": "#dde3e7",
+                        "secondary-fixed-dim": "#bcc7de",
+                        "on-secondary": "#263143",
+                        "surface": "#0e1417",
+                        "primary-fixed": "#b7eaff",
+                        "outline-variant": "#3c494e",
+                        "surface-container-lowest": "#090f12",
+                        "surface-container-high": "#242b2e",
+                        "secondary-container": "#3e495d",
+                        "on-primary-fixed": "#001f28",
+                        "tertiary-fixed": "#ffddb1",
+                        "surface-container-highest": "#2f3639",
+                        "on-surface-variant": "#bbc9cf",
+                        "on-error": "#690005",
+                        "tertiary": "#ffd59c",
+                        "primary-container": "#00d1ff",
+                        "inverse-primary": "#00677f",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#2f3639",
+                        "surface-bright": "#333a3d",
+                        "on-primary-container": "#00566a",
+                        "on-primary": "#003543",
+                        "surface-container-low": "#161d1f",
+                        "surface-container": "#1a2123",
+                        "secondary": "#bcc7de",
+                        "on-surface": "#dde3e7",
+                        "on-secondary-container": "#aeb9d0",
+                        "on-primary-fixed-variant": "#004e60",
+                        "on-tertiary-fixed": "#291800",
+                        "on-tertiary-fixed-variant": "#624000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "margin": "24px",
+                        "md": "16px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "mono-data": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "title-lg": ["18px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "mono-data": ["13px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 209, 255, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(0, 209, 255, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 209, 255, 0); }
+        }
+        .chart-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 3s linear forwards;
+        }
+        @keyframes draw {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md h-screen overflow-hidden flex">
+<!-- SideNavBar Component -->
+<nav class="w-[240px] h-screen fixed left-0 top-0 bg-surface border-r border-outline-variant z-20 flex flex-col h-full py-lg">
+<div class="px-lg mb-lg flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary-container text-[28px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+<div>
+<div class="font-headline-sm text-headline-sm font-bold text-on-surface">CyberShield AI</div>
+<div class="font-label-md text-label-md text-on-surface-variant">Enterprise SOC</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto mt-md">
+<!-- Tabs -->
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Overview</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-primary bg-secondary-container/10 border-l-4 border-primary hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+<span class="font-body-md text-body-md font-bold">Monitoring</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">dns</span>
+<span class="font-body-md text-body-md">Infrastructure</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">security</span>
+<span class="font-body-md text-body-md">Threats</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">emergency</span>
+<span class="font-body-md text-body-md">Incidents</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">model_training</span>
+<span class="font-body-md text-body-md">Attack Simulator</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">settings_backup_restore</span>
+<span class="font-body-md text-body-md">Recovery</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">article</span>
+<span class="font-body-md text-body-md">Logs</span>
+</a>
+</div>
+<div class="mt-auto border-t border-outline-variant/30 pt-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar Component -->
+<header class="fixed top-0 right-0 w-[calc(100%-240px)] h-16 bg-surface border-b border-outline-variant z-10 flex justify-between items-center px-lg h-full ml-[240px]">
+<div class="flex items-center h-full gap-lg">
+<!-- Navigation Links -->
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all scale-95 duration-150 h-full flex items-center px-sm" href="#">Dashboard</a>
+<a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary hover:text-primary transition-all scale-95 duration-150 h-full flex items-center px-sm mt-[2px]" href="#">Systems</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all scale-95 duration-150 h-full flex items-center px-sm" href="#">Compliance</a>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">schedule</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center ml-sm cursor-pointer">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[240px] mt-16 w-[calc(100%-240px)] h-[calc(100vh-64px)] overflow-y-auto p-lg bg-background">
+<!-- Header -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface flex items-center gap-sm">
+                    Monitoring
+                    <span class="flex h-3 w-3 relative ml-sm">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary-container"></span>
+</span>
+</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Live telemetry and system health tracking</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm rounded border border-outline-variant text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">filter_list</span> Filter
+                </button>
+<button class="px-md py-sm rounded bg-primary-container text-on-primary-container hover:opacity-90 transition-opacity font-label-md text-label-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">download</span> Export Report
+                </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-md">
+<!-- Top Row: Core Metrics -->
+<!-- System Risk Score -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container border border-outline-variant rounded-lg p-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<h2 class="font-title-lg text-title-lg text-on-surface">System Risk Score</h2>
+<span class="material-symbols-outlined text-on-surface-variant">policy</span>
+</div>
+<div class="flex items-center justify-center py-lg">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<!-- Simple CSS Gauge approximation -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#2f3639" stroke-width="8"></circle>
+<circle class="transition-all duration-1000" cx="50" cy="50" fill="transparent" r="40" stroke="#00d1ff" stroke-dasharray="251" stroke-dashoffset="60" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-mono-data text-headline-lg font-bold text-primary-container">24</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-xs">LOW RISK</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Failed Logins -->
+<div class="col-span-12 md:col-span-6 lg:col-span-2 bg-surface-container border border-outline-variant rounded-lg p-md flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute inset-0 bg-error/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div>
+<h2 class="font-label-md text-label-md text-on-surface-variant flex items-center gap-xs uppercase tracking-wider">
+                        Failed Logins
+                        <span class="material-symbols-outlined text-[14px]">warning</span>
+</h2>
+<div class="mt-sm flex items-end gap-xs">
+<span class="font-mono-data text-headline-md font-bold text-error">1,492</span>
+<span class="font-body-sm text-body-sm text-error/80 mb-1">+12%</span>
+</div>
+</div>
+<!-- Sparkline SVG -->
+<div class="h-12 w-full mt-md">
+<svg class="w-full h-full preserve-aspect-ratio-none" viewbox="0 0 100 30">
+<path class="opacity-80" d="M0,25 L10,22 L20,28 L30,15 L40,20 L50,5 L60,18 L70,10 L80,25 L90,12 L100,20" fill="none" stroke="#ffb4ab" stroke-width="2"></path>
+<path class="opacity-20" d="M0,30 L0,25 L10,22 L20,28 L30,15 L40,20 L50,5 L60,18 L70,10 L80,25 L90,12 L100,20 L100,30 Z" fill="url(#errorGradient)"></path>
+<defs>
+<lineargradient id="errorGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ffb4ab"></stop>
+<stop offset="100%" stop-color="transparent"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+</div>
+<!-- Data Transfer -->
+<div class="col-span-12 md:col-span-6 lg:col-span-3 bg-surface-container border border-outline-variant rounded-lg p-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Data Transfer</h2>
+<span class="material-symbols-outlined text-[16px] text-primary">sync_alt</span>
+</div>
+<div class="mt-md space-y-sm">
+<div>
+<div class="flex justify-between font-mono-data text-mono-data mb-xs">
+<span class="text-on-surface">Egress</span>
+<span class="text-primary-container">4.2 TB/s</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-1.5">
+<div class="bg-primary-container h-1.5 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-mono-data text-mono-data mb-xs">
+<span class="text-on-surface">Ingress</span>
+<span class="text-tertiary-container">1.8 TB/s</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-1.5">
+<div class="bg-tertiary-container h-1.5 rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- File Activity -->
+<div class="col-span-12 md:col-span-6 lg:col-span-3 bg-surface-container border border-outline-variant rounded-lg p-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">File Activity</h2>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">folder_open</span>
+</div>
+<div class="mt-md grid grid-cols-2 gap-sm">
+<div class="bg-surface-container-high rounded p-sm border border-outline-variant/50">
+<div class="font-mono-data text-body-sm text-on-surface-variant">Created</div>
+<div class="font-mono-data text-title-lg text-on-surface mt-xs">8,432</div>
+</div>
+<div class="bg-surface-container-high rounded p-sm border border-outline-variant/50">
+<div class="font-mono-data text-body-sm text-on-surface-variant">Modified</div>
+<div class="font-mono-data text-title-lg text-tertiary-fixed-dim mt-xs">12,104</div>
+</div>
+</div>
+</div>
+<!-- Middle Row: Telemetry -->
+<!-- Network Traffic (Line Chart Area) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container border border-outline-variant rounded-lg p-md flex flex-col min-h-[300px]">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-title-lg text-title-lg text-on-surface">Network Traffic Telemetry</h2>
+<div class="flex gap-xs bg-surface-variant rounded p-xs">
+<button class="px-sm py-xs text-[10px] font-label-md rounded bg-surface-container-high text-on-surface">1H</button>
+<button class="px-sm py-xs text-[10px] font-label-md rounded text-on-surface-variant hover:text-on-surface">6H</button>
+<button class="px-sm py-xs text-[10px] font-label-md rounded text-on-surface-variant hover:text-on-surface">24H</button>
+</div>
+</div>
+<div class="flex-1 w-full relative pt-md">
+<!-- Chart Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between py-md pointer-events-none opacity-20">
+<div class="border-b border-outline-variant w-full h-0"></div>
+<div class="border-b border-outline-variant w-full h-0"></div>
+<div class="border-b border-outline-variant w-full h-0"></div>
+<div class="border-b border-outline-variant w-full h-0"></div>
+<div class="border-b border-outline-variant w-full h-0"></div>
+</div>
+<!-- Chart SVG -->
+<svg class="w-full h-full preserve-aspect-ratio-none z-10 relative" viewbox="0 0 1000 200">
+<path class="chart-line drop-shadow-[0_0_8px_rgba(0,209,255,0.5)]" d="M0,150 L50,120 L100,160 L150,90 L200,110 L250,50 L300,130 L350,80 L400,100 L450,40 L500,120 L550,60 L600,140 L650,70 L700,110 L750,30 L800,90 L850,50 L900,120 L950,60 L1000,100" fill="none" stroke="#00d1ff" stroke-width="2"></path>
+<path class="opacity-10" d="M0,200 L0,150 L50,120 L100,160 L150,90 L200,110 L250,50 L300,130 L350,80 L400,100 L450,40 L500,120 L550,60 L600,140 L650,70 L700,110 L750,30 L800,90 L850,50 L900,120 L950,60 L1000,100 L1000,200 Z" fill="url(#trafficGradient)"></path>
+<defs>
+<lineargradient id="trafficGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#00d1ff"></stop>
+<stop offset="100%" stop-color="transparent"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+</div>
+<!-- CPU/Memory Usage -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container border border-outline-variant rounded-lg p-md flex flex-col">
+<h2 class="font-title-lg text-title-lg text-on-surface mb-lg">Resource Utilization</h2>
+<!-- CPU Node Grid -->
+<div class="mb-lg">
+<div class="flex justify-between items-end mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">CPU Cluster Load</span>
+<span class="font-mono-data text-primary-container">68%</span>
+</div>
+<div class="grid grid-cols-8 gap-xs">
+<!-- Generate 32 small blocks for CPU nodes -->
+<script>
+                            for(let i=0; i<32; i++) {
+                                let opacity = Math.random() > 0.3 ? (Math.random() * 0.5 + 0.5) : 0.2;
+                                let colorClass = Math.random() > 0.9 ? 'bg-error' : 'bg-primary-container';
+                                if(opacity === 0.2) colorClass = 'bg-surface-variant';
+                                document.write(`<div class="aspect-square rounded-[2px] ${colorClass}" style="opacity: ${opacity}"></div>`);
+                            }
+                        </script>
+</div>
+</div>
+<!-- Memory Bar -->
+<div>
+<div class="flex justify-between items-end mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Memory Allocation</span>
+<span class="font-mono-data text-tertiary-container">84%</span>
+</div>
+<div class="w-full bg-surface-variant rounded h-4 overflow-hidden flex border border-outline-variant/30">
+<div class="bg-primary-container h-full" style="width: 40%"></div>
+<div class="bg-tertiary-container h-full" style="width: 30%"></div>
+<div class="bg-error h-full" style="width: 14%"></div>
+</div>
+<div class="flex gap-md mt-xs font-mono-data text-[10px] text-on-surface-variant">
+<span class="flex items-center gap-[4px]"><span class="w-2 h-2 rounded-sm bg-primary-container inline-block"></span> System</span>
+<span class="flex items-center gap-[4px]"><span class="w-2 h-2 rounded-sm bg-tertiary-container inline-block"></span> Cache</span>
+<span class="flex items-center gap-[4px]"><span class="w-2 h-2 rounded-sm bg-error inline-block"></span> Overhead</span>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Real-time Activity Table -->
+<div class="col-span-12 bg-surface-container border border-outline-variant rounded-lg flex flex-col overflow-hidden">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-high">
+<h2 class="font-title-lg text-title-lg text-on-surface">Real-time Activity Log</h2>
+<span class="px-sm py-[2px] rounded bg-primary/10 text-primary border border-primary/30 font-mono-data text-[10px] flex items-center gap-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary pulse-dot"></span> LIVE
+                    </span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface border-b border-outline-variant font-label-md text-label-md text-on-surface-variant">
+<th class="p-md font-medium uppercase tracking-wider">Timestamp</th>
+<th class="p-md font-medium uppercase tracking-wider">Source IP / Host</th>
+<th class="p-md font-medium uppercase tracking-wider">Activity Type</th>
+<th class="p-md font-medium uppercase tracking-wider">Status</th>
+<th class="p-md font-medium uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-mono-data text-mono-data text-on-surface">
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-high transition-colors">
+<td class="p-md text-on-surface-variant">2023-10-27 14:32:01</td>
+<td class="p-md">192.168.1.104 <span class="text-on-surface-variant text-[10px] ml-xs">WKST-04</span></td>
+<td class="p-md">Privilege Escalation Attempt</td>
+<td class="p-md"><span class="px-2 py-1 rounded bg-error/10 text-error border border-error/20 font-bold text-[11px]">CRITICAL</span></td>
+<td class="p-md text-right"><button class="text-primary hover:text-primary-container text-sm uppercase tracking-wide">Investigate</button></td>
+</tr>
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-high transition-colors">
+<td class="p-md text-on-surface-variant">2023-10-27 14:31:45</td>
+<td class="p-md">10.0.5.22 <span class="text-on-surface-variant text-[10px] ml-xs">DB-PROD-1</span></td>
+<td class="p-md">Large Data Export (&gt;5GB)</td>
+<td class="p-md"><span class="px-2 py-1 rounded bg-tertiary-container/10 text-tertiary-fixed-dim border border-tertiary-container/20 font-bold text-[11px]">WARNING</span></td>
+<td class="p-md text-right"><button class="text-primary hover:text-primary-container text-sm uppercase tracking-wide">Investigate</button></td>
+</tr>
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-high transition-colors">
+<td class="p-md text-on-surface-variant">2023-10-27 14:31:12</td>
+<td class="p-md">172.16.0.5 <span class="text-on-surface-variant text-[10px] ml-xs">GW-INT-A</span></td>
+<td class="p-md">Configuration Updated</td>
+<td class="p-md"><span class="px-2 py-1 rounded bg-surface-variant text-on-surface border border-outline-variant font-bold text-[11px]">INFO</span></td>
+<td class="p-md text-right"><button class="text-on-surface-variant hover:text-on-surface text-sm uppercase tracking-wide">View</button></td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-md text-on-surface-variant">2023-10-27 14:30:59</td>
+<td class="p-md">192.168.2.50 <span class="text-on-surface-variant text-[10px] ml-xs">VPN-NODE</span></td>
+<td class="p-md">Multiple Failed Auth</td>
+<td class="p-md"><span class="px-2 py-1 rounded bg-tertiary-container/10 text-tertiary-fixed-dim border border-tertiary-container/20 font-bold text-[11px]">WARNING</span></td>
+<td class="p-md text-right"><button class="text-primary hover:text-primary-container text-sm uppercase tracking-wide">Investigate</button></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</body></html>

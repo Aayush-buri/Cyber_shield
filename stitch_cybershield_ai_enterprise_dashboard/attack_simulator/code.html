@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CyberShield AI - Attack Simulator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#a4e6ff",
+                        "primary-fixed": "#b7eaff",
+                        "on-tertiary": "#442b00",
+                        "on-secondary": "#263143",
+                        "on-primary-fixed-variant": "#004e60",
+                        "surface-tint": "#4cd6ff",
+                        "on-tertiary-fixed": "#291800",
+                        "surface": "#0e1417",
+                        "primary-fixed-dim": "#4cd6ff",
+                        "secondary-fixed-dim": "#bcc7de",
+                        "surface-container-high": "#242b2e",
+                        "on-tertiary-container": "#6b4700",
+                        "secondary-container": "#3e495d",
+                        "tertiary-container": "#feb127",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "background": "#0e1417",
+                        "secondary": "#bcc7de",
+                        "inverse-surface": "#dde3e7",
+                        "secondary-fixed": "#d8e3fb",
+                        "tertiary": "#ffd59c",
+                        "error": "#ffb4ab",
+                        "on-primary": "#003543",
+                        "surface-container-highest": "#2f3639",
+                        "on-primary-fixed": "#001f28",
+                        "surface-dim": "#0e1417",
+                        "surface-container": "#1a2123",
+                        "tertiary-fixed-dim": "#ffba49",
+                        "primary-container": "#00d1ff",
+                        "surface-bright": "#333a3d",
+                        "surface-variant": "#2f3639",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed": "#111c2d",
+                        "tertiary-fixed": "#ffddb1",
+                        "surface-container-low": "#161d1f",
+                        "on-error": "#690005",
+                        "on-surface": "#dde3e7",
+                        "on-surface-variant": "#bbc9cf",
+                        "on-primary-container": "#00566a",
+                        "inverse-on-surface": "#2b3134",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#dde3e7",
+                        "on-secondary-container": "#aeb9d0",
+                        "outline": "#859399",
+                        "on-tertiary-fixed-variant": "#624000",
+                        "outline-variant": "#3c494e",
+                        "surface-container-lowest": "#090f12",
+                        "inverse-primary": "#00677f"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "lg": "24px",
+                        "xl": "32px",
+                        "margin": "24px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "md": "16px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "mono-data": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    fontSize: {
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "title-lg": ["18px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "mono-data": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0A0E14; color: #dde3e7; }
+        .card-surface { background-color: #121820; border: 1px solid #1E293B; }
+        .grid-lines {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(30, 41, 59, 0.3) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(30, 41, 59, 0.3) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md h-screen w-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<nav class="bg-surface dark:bg-surface text-primary dark:text-primary font-body-md text-body-md w-[240px] h-screen fixed left-0 top-0 border-r border-outline-variant dark:border-outline-variant flat no shadows flex flex-col h-full py-lg z-50">
+<div class="px-md mb-xl flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold">C</div>
+<div class="font-headline-sm text-headline-sm font-bold text-on-surface dark:text-on-surface">CyberShield AI</div>
+</div>
+<div class="px-md text-on-surface-variant font-label-md text-label-md mb-md uppercase">Enterprise SOC</div>
+<div class="flex-1 flex flex-col gap-xs px-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80 rounded" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Overview</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80 rounded" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span>Monitoring</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80 rounded" href="#">
+<span class="material-symbols-outlined">dns</span>
+<span>Infrastructure</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80 rounded" href="#">
+<span class="material-symbols-outlined">security</span>
+<span>Threats</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80 rounded" href="#">
+<span class="material-symbols-outlined">emergency</span>
+<span>Incidents</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-primary dark:text-primary bg-secondary-container/10 border-l-4 border-primary cursor-pointer active:opacity-80 rounded-r" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">model_training</span>
+<span>Attack Simulator</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80 rounded" href="#">
+<span class="material-symbols-outlined">settings_backup_restore</span>
+<span>Recovery</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80 rounded" href="#">
+<span class="material-symbols-outlined">article</span>
+<span>Logs</span>
+</a>
+</div>
+<div class="mt-auto px-sm flex flex-col gap-xs border-t border-outline-variant pt-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80 rounded" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80 rounded" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 ml-[240px] flex flex-col h-screen overflow-hidden bg-[#0A0E14]">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface text-primary dark:text-primary font-label-md text-label-md fixed top-0 right-0 w-[calc(100%-240px)] h-16 border-b border-outline-variant dark:border-outline-variant flat no shadows flex justify-between items-center px-lg z-40">
+<div class="flex items-center gap-xl h-full">
+<div class="flex h-full gap-lg">
+<a class="flex items-center text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all scale-95 duration-150" href="#">Dashboard</a>
+<a class="flex items-center text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all scale-95 duration-150" href="#">Systems</a>
+<a class="flex items-center text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all scale-95 duration-150" href="#">Compliance</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-sm rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-sm rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined">schedule</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden ml-sm">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a cybersecurity analyst in a dimly lit SOC control room. Cool blue lighting reflects subtly on their features, emphasizing a high-tech, focused enterprise environment. Corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCshmOER7jwwVZlNh18W19EoBEi_d9Cr2Oj0NXui2Bcx-zJv9Kl7uC4cyzH3PR-Tu3Hi-tHWgXhn1CzHf7g2NMNxRZZifiweNkEeEhujUWVw6Uzxo0bB3L8tnUjfHqpjgljBHl8U55mtDB3Ubox7GdqXoEK5SdSck6dfLu0qvhtL5If6Xk82CAyWUdZPwuNlngOaoiloaqx0D8JwYKSivbsXsPdsEEwujhLbRO5EoIXbAJDkEzvE15a"/>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 mt-16 p-lg overflow-y-auto w-full grid grid-cols-12 gap-md grid-rows-[min-content_1fr_min-content]">
+<!-- Page Header -->
+<div class="col-span-12 flex justify-between items-end mb-sm">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Attack Simulation Lab</h1>
+<p class="text-on-surface-variant font-body-md text-body-md">Proactive stress testing for critical infrastructure.</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface-container-high border border-outline-variant text-on-surface px-md py-sm rounded text-label-md font-label-md hover:bg-surface-variant transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">history</span> View Logs
+                    </button>
+<button class="bg-[#00D1FF] text-black px-md py-sm rounded text-label-md font-label-md hover:bg-[#4cd6ff] transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">add</span> New Scenario
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="col-span-12 grid grid-cols-12 gap-md h-full min-h-[600px]">
+<!-- Simulator Console (Left, Large) -->
+<div class="col-span-8 card-surface rounded-lg flex flex-col overflow-hidden relative">
+<div class="p-sm px-md border-b border-[#1E293B] bg-surface-container flex justify-between items-center z-10">
+<h2 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Network Grid Console</h2>
+<div class="flex items-center gap-sm">
+<span class="flex h-2 w-2 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00D1FF] opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-[#00D1FF]"></span>
+</span>
+<span class="text-xs text-on-surface-variant font-mono-data">STANDBY</span>
+</div>
+</div>
+<div class="flex-1 grid-lines relative flex items-center justify-center p-lg">
+<!-- Placeholder for complex topology visualization -->
+<div class="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
+<img alt="Network Topology" class="w-full h-full object-contain p-xl" data-alt="A highly detailed, technical vector-style diagram of an enterprise network topology. Glowing cyan nodes connected by straight, precise lines on a deep charcoal background. Minimalist, strict corporate security aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZzY4bHREMg3V3f6r9WFxaP3MCeNc6yhg4ld_XAsX2VPxNpNtKOO5ULiL4KyGzb_Ojd3QNIPM5hOrQ1eKVrOjFCBlFYPdVJ5ycy8zLI7Qza2fR49io6Ev5U6HqCOIEVB6oSs4A1MPdgawj9GAb8pbWrTnHhA5r2uRLDaHT3J8VFMx0N0JocWMLN8YE7zllGhoi7XIcm8ZP177snl3z-J9FFvqEFaob4gRs0mpbcYrX-fPigWBMVZOR"/>
+</div>
+<!-- Mock Nodes -->
+<div class="relative w-full max-w-2xl aspect-[16/9] border border-outline-variant/30 rounded bg-surface/50 backdrop-blur-sm p-md flex flex-col justify-between">
+<div class="flex justify-between">
+<div class="w-12 h-12 rounded border border-[#1E293B] bg-surface-container-low flex items-center justify-center text-on-surface-variant"><span class="material-symbols-outlined">dns</span></div>
+<div class="w-12 h-12 rounded border border-[#1E293B] bg-surface-container-low flex items-center justify-center text-on-surface-variant"><span class="material-symbols-outlined">database</span></div>
+</div>
+<div class="flex justify-center">
+<div class="w-16 h-16 rounded-full border-2 border-[#00D1FF]/50 bg-[#00D1FF]/10 flex items-center justify-center text-[#00D1FF] shadow-[0_0_15px_rgba(0,209,255,0.2)]"><span class="material-symbols-outlined text-[32px]">router</span></div>
+</div>
+<div class="flex justify-between">
+<div class="w-12 h-12 rounded border border-[#1E293B] bg-surface-container-low flex items-center justify-center text-on-surface-variant"><span class="material-symbols-outlined">desktop_windows</span></div>
+<div class="w-12 h-12 rounded border border-[#1E293B] bg-surface-container-low flex items-center justify-center text-on-surface-variant"><span class="material-symbols-outlined">cloud</span></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (Controls & Impact) -->
+<div class="col-span-4 flex flex-col gap-md h-full">
+<!-- Control Panel -->
+<div class="card-surface rounded-lg flex flex-col">
+<div class="p-sm px-md border-b border-[#1E293B] bg-surface-container flex justify-between items-center">
+<h2 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Deploy Simulation</h2>
+</div>
+<div class="p-md flex flex-col gap-sm">
+<button class="w-full flex items-center justify-between p-sm border border-[#1E293B] bg-surface-container-low hover:bg-surface-container transition-colors rounded text-left group">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 rounded bg-error/10 text-error flex items-center justify-center group-hover:bg-error/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<div>
+<div class="font-body-md text-on-surface font-medium">Ransomware Attack</div>
+<div class="text-xs text-on-surface-variant font-mono-data">T1486: Data Encrypted</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">play_arrow</span>
+</button>
+<button class="w-full flex items-center justify-between p-sm border border-[#1E293B] bg-surface-container-low hover:bg-surface-container transition-colors rounded text-left group">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 rounded bg-tertiary/10 text-tertiary flex items-center justify-center group-hover:bg-tertiary/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">login</span>
+</div>
+<div>
+<div class="font-body-md text-on-surface font-medium">Brute Force Entry</div>
+<div class="text-xs text-on-surface-variant font-mono-data">T1110: Credential Access</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">play_arrow</span>
+</button>
+<button class="w-full flex items-center justify-between p-sm border border-[#1E293B] bg-surface-container-low hover:bg-surface-container transition-colors rounded text-left group">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+</div>
+<div>
+<div class="font-body-md text-on-surface font-medium">Data Exfiltration</div>
+<div class="text-xs text-on-surface-variant font-mono-data">T1048: Exfiltration</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Impact Analysis -->
+<div class="card-surface rounded-lg flex-1 flex flex-col">
+<div class="p-sm px-md border-b border-[#1E293B] bg-surface-container flex justify-between items-center">
+<h2 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Impact Analysis</h2>
+<span class="text-xs text-on-surface-variant font-mono-data">LIVE</span>
+</div>
+<div class="p-md flex-1 flex flex-col gap-md">
+<!-- Security Score Metric -->
+<div class="flex justify-between items-end border-b border-outline-variant/30 pb-sm">
+<div>
+<div class="text-xs text-on-surface-variant uppercase mb-xs font-label-md">Security Score</div>
+<div class="font-headline-lg text-headline-lg text-on-surface leading-none">94<span class="text-sm text-on-surface-variant ml-xs">/100</span></div>
+</div>
+<div class="text-primary font-mono-data text-xs bg-primary/10 px-xs py-[2px] rounded border border-primary/20">+0.5% (Stable)</div>
+</div>
+<!-- Mock Graph Area -->
+<div class="flex-1 relative flex items-end">
+<div class="absolute inset-0 opacity-50">
+<img alt="Performance Graph" class="w-full h-full object-cover" data-alt="A minimalist data visualization showing a line graph. The line is bright cyan against a dark slate background, illustrating a stable trend with minor fluctuations. High-tech corporate aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFkDZ7cMr57QUG5ccuWtGWs76O_OGI-zKZOdeeWxg2OEqFwPBOua1gcOl4LM4BGhuoa7BSbCsrN2X5AK6Pq18xgBN2xFU6wA0yXvc5Hlq9YXcemMudESfe-oddOLFN5XB_z6ZVS2wW2M_PA2jbMvAjt4iir_q4mF17ARbyniqK2lBcagOEZd3m6USCwcbx_V7oe0dEavhIGZ8NEd7zLqyJXHv0anxVHg_AsHoknT9QBOef7YVmRAvk"/>
+</div>
+<div class="w-full flex justify-between text-[10px] text-on-surface-variant font-mono-data z-10 border-t border-outline-variant/30 pt-xs">
+<span>T-60s</span>
+<span>T-30s</span>
+<span>NOW</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Simulation History (Bottom, Full Width) -->
+<div class="col-span-12 card-surface rounded-lg flex flex-col mt-md">
+<div class="p-sm px-md border-b border-[#1E293B] bg-surface-container flex justify-between items-center">
+<h2 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Simulation History</h2>
+<button class="text-xs text-primary hover:underline font-label-md">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-xs uppercase tracking-wider border-b border-[#1E293B]">
+<th class="p-sm px-md font-medium">Timestamp</th>
+<th class="p-sm px-md font-medium">Scenario</th>
+<th class="p-sm px-md font-medium">Target Asset</th>
+<th class="p-sm px-md font-medium">Duration</th>
+<th class="p-sm px-md font-medium text-right">Outcome</th>
+</tr>
+</thead>
+<tbody class="text-sm font-mono-data text-on-surface divide-y divide-[#1E293B]">
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="p-sm px-md text-on-surface-variant">2023-10-27 14:32:01</td>
+<td class="p-sm px-md">Ransomware (T1486)</td>
+<td class="p-sm px-md">DB-Cluster-04</td>
+<td class="p-sm px-md">04m 12s</td>
+<td class="p-sm px-md text-right">
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded bg-[#00D1FF]/10 text-[#00D1FF] border border-[#00D1FF]/20 text-xs">
+<span class="material-symbols-outlined text-[14px]">shield</span> Defended
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="p-sm px-md text-on-surface-variant">2023-10-27 10:15:44</td>
+<td class="p-sm px-md">Data Exfil (T1048)</td>
+<td class="p-sm px-md">Storage-Vol-B</td>
+<td class="p-sm px-md">11m 05s</td>
+<td class="p-sm px-md text-right">
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded bg-error/10 text-error border border-error/20 text-xs">
+<span class="material-symbols-outlined text-[14px]">warning</span> Success (Breach)
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="p-sm px-md text-on-surface-variant">2023-10-26 18:45:22</td>
+<td class="p-sm px-md">Brute Force (T1110)</td>
+<td class="p-sm px-md">Gateway-Edge-1</td>
+<td class="p-sm px-md">01m 45s</td>
+<td class="p-sm px-md text-right">
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded bg-[#00D1FF]/10 text-[#00D1FF] border border-[#00D1FF]/20 text-xs">
+<span class="material-symbols-outlined text-[14px]">shield</span> Defended
+                                        </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
